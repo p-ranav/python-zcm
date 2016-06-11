@@ -44,26 +44,5 @@ class Timer():
         timer_thread = self.spawn()
         timer_thread.start()
 
-def timer_operation():
-    print "Timer Operation Handled!"
-
-def timer_operation_2():
-    print "Timer Operation 2 Handled!"
-
-MyQueue = OperationQueue(1000) # Queue max size = 1000
-
-timer = Timer("MyTimer", 90, 0.5, timer_operation, MyQueue)
-timer2 = Timer("MyTimer2", 90, 0.2, timer_operation_2, MyQueue)
-
-executor_thread = MyQueue.spawn()
-executor_thread.start()
-
-timer.start()
-timer2.start()
-
-executor_thread.join()
-timer.join()
-timer2.join()
-
         
         

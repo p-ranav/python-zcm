@@ -21,19 +21,17 @@ class SubscriberOperation():
         self.operation_function()
 
 class ServerOperation():
-    def __init__(self, name, priority, operation_function, 
-                 socket_ptr, recv_ready):
+    def __init__(self, name, priority, operation_function, server):
         self.name = name
         self.priority = priority
         self.operation_function = operation_function
-        self.socket_ptr = socket_ptr
-        self.recv_ready = recv_ready
+        self.server = server
 
     def execute(self):
         response = self.operation_function()
-        if not (self.socket_ptr == None):
-            self.socket_ptr.send(response)
-        self.recv_ready = True
+        if not (self.server.server_socket == None):
+            self.server.server_socket.send(response)
+        self.server.ready = True
 
 class OperationQueue():
 
@@ -62,32 +60,3 @@ class OperationQueue():
 
     def spawn(self):
         return Thread(target = self.process)
-
-
-def timer():
-    print "TimerOperation"
-
-def subscriber():
-    print "SubscriberOperation"
-
-def server():
-    print "ServerOperation"
-
-MyQueue = OperationQueue(1000)
-
-my_operation = TimerOperation("TimerOperation", 85, timer)
-print my_operation.__dict__
-MyQueue.enqueue(my_operation)
-
-my_operation = SubscriberOperation("SubscriberOperation", 80, subscriber)
-print my_operation.__dict__
-MyQueue.enqueue(my_operation)
-
-my_operation = ServerOperation("ServerOperation", 95, server, None, False)
-print my_operation.__dict__
-MyQueue.enqueue(my_operation)
-
-executor_thread = MyQueue.spawn()
-executor_thread.start()
-
-#executor_thread.join()
