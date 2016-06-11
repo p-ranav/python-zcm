@@ -23,7 +23,5 @@ Installation
 -------------
 
 ```bash
-$ git clone https://github.com/pranav-srinivas-kumar/python-zcm
-$ cd python-zcm
-$ pip install .
+$ pip install zcm
 ```
