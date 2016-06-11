@@ -104,7 +104,3 @@ class Actor():
         for instance in self.component_instances:
             instance_thread = instance.spawn()
             instance_thread.start()
-
-my_actor = Actor()
-my_actor.configure("configuration.json")
-my_actor.run()
