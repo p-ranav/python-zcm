@@ -1,0 +1,18 @@
+{
+    "Component Instances": [
+	{
+	    "Name" : "simple_timer_component_instance",
+
+	    "Definition" : "simple_timer.SimpleTimer",
+
+	    "Timers" : [
+		{
+		    "Name" : "simple_timer",
+		    "Priority" : 50,
+		    "Period" : 5.0,
+		    "Function" : "timer_function"
+		}
+	    ]	    
+	}
+    ]
+}
