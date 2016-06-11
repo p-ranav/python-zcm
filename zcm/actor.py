@@ -1,5 +1,6 @@
+#!/usr/bin/env python
+"""actor.py: This file contains the Actor class."""
 import json
-from pprint import pprint
 import importlib
 from timer import Timer
 from publisher import Publisher
@@ -7,14 +8,30 @@ from subscriber import Subscriber
 from client import Client
 from server import Server
 
+__author__ = "Pranav Srinivas Kumar"
+__copyright__ = "Copyright 2016, Pranav Srinivas Kumar"
+__credits__ = ["Pranav Srinivas Kumar"]
+__license__ = "MIT"
+__version__ = "1.0.0"
+__maintainer__ = "Pranav Srinivas Kumar"
+__email__ = "pranav.srinivas.kumar@gmail.com"
+__status__ = "Production"
+
+# Actor class
 class Actor():
     def __init__(self):
+        """Construct an actor - Prepare an empty list of component instances"""
         self.component_instances = []
 
     def configure(self, configuration_file):
+        """
+        Configure the component instances list
+        
+        Keyword arguments:
+        configuration_file - JSON configuration file to parse
+        """
         with open(configuration_file) as data_file:
             root = json.load(data_file)
-            pprint(root)
             for instance in root["Component Instances"]:
                 instance_source = instance["Definition"]
                 module_name, class_name = instance_source.split(".") 
@@ -101,6 +118,7 @@ class Actor():
                 self.component_instances.append(component_instance)
 
     def run(self):
+        """Spawn all component instances"""
         for instance in self.component_instances:
             instance_thread = instance.spawn()
             instance_thread.start()
