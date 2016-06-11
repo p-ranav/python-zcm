@@ -31,7 +31,22 @@ $ pip install zcm
 Simple Timer Example
 --------------------
 
-* Create a SimpleTimer component class
+* Let's build a simple time-triggered application
+* Prepare the application workspace:
+
+```bash
+$ mkdir simple-timer
+$ cd simple-timer
+$ touch __init__.py
+```
+
+* Create a simple timer component
+
+```bash
+$ touch simple_timer.py
+```
+
+* Edit simple_timer.py as shown below. 
 * SimpleTimer has one functionality - "timer_function" that when called prints the current time
 * This functionality is registered as an operation in the component's constructor
 
