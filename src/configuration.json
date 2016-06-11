@@ -1,0 +1,35 @@
+{
+    "Component Instances": [
+	{
+	    "Name" : "component_1_instance",
+	    "Definition" : "component_1.component_1",
+
+	    "Timers" : [
+		{
+		    "Name" : "timer_1",
+		    "Period" : 500000000,
+		    "Priority" : 50,
+		    "Function" : "timer_1_function"
+		}
+	    ],	    
+
+	    "Publishers" : [
+		{
+		    "Name" : "publisher_port",
+		    "Endpoints" : ["tcp://*:5555"]
+		}
+	    ],
+
+	    "Subscribers" : [
+		{
+		    "Name" : "Name_Subscriber",
+		    "Priority" : 60,
+		    "Filter" : "",
+		    "Function" : "subscriber_function",
+		    "Endpoints" : ["tcp://127.0.0.1:5555",
+				   "tcp://127.0.0.1:5556"]
+		}
+	    ]
+	}
+    ]
+}

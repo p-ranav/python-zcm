@@ -53,35 +53,3 @@ class Subscriber():
     def start(self):
         subscriber_thread = self.spawn()
         subscriber_thread.start()        
-
-
-from publisher import Publisher
-from timer import Timer
-from operation_queue import OperationQueue, SubscriberOperation
-
-my_publisher = Publisher("my_publisher", ["tcp://*:5555"])
-
-def timer_operation():
-    global my_publisher
-    my_publisher.send("Publishing inside timer")
-    print "Timer Operation Handled!"
-
-def subscriber_operation(message):
-    print "Received message in subscriber:", message 
-
-MyQueue = OperationQueue(1000) # Queue max size = 1000
-
-timer = Timer("Timer", 90, 1.0, timer_operation, MyQueue)
-subscriber = Subscriber("Subscriber", 70, u'', 
-                        ["tcp://127.0.0.1:5555", "tcp://127.0.0.1:5556"], 
-                        subscriber_operation, MyQueue)
-
-executor_thread = MyQueue.spawn()
-executor_thread.start()
-
-timer.start()
-subscriber.start()
-
-executor_thread.join()
-timer.join()
-subscriber.join()
