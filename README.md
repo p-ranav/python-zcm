@@ -19,6 +19,8 @@ Overview
 * An actor receives a configuration (.JSON) file, that contains information regarding the components to instantiate
 * This configuration file also contains properties of all timers and ports contained by the component instances
 
+Python Packaging Index (PyPI) : https://pypi.python.org/pypi/zcm/1.0.0
+
 Installation
 -------------
 
