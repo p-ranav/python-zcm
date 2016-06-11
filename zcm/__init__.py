@@ -9,6 +9,11 @@ from server import Server
 from component import Component
 from actor import Actor
 import argparse
+import os, sys, inspect
+
+pwd = os.getcwd()
+if pwd not in sys.path:
+    sys.path.insert(0, pwd)
 
 def main():
     """Entry point for the application script"""
@@ -21,5 +26,5 @@ def main():
 
     if not (args['config'] == None):
         my_actor = Actor()
-        my_actor.configure("configuration.json")
+        my_actor.configure(args['config'])
         my_actor.run()
