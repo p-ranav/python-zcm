@@ -16,7 +16,7 @@ class Publisher():
     def bind(self, new_endpoints):
         self.endpoints = new_endpoints
         self.context = zmq.Context()
-        self.publisher_socket = context.socket(zmq.PUB)
+        self.publisher_socket = self.context.socket(zmq.PUB)
         for endpoint in new_endpoints:
             self.publisher_socket.bind(endpoint)
 

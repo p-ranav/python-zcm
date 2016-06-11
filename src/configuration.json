@@ -2,12 +2,12 @@
     "Component Instances": [
 	{
 	    "Name" : "component_1_instance",
-	    "Definition" : "component_1.component_1",
+	    "Definition" : "test_components.component_1",
 
 	    "Timers" : [
 		{
 		    "Name" : "timer_1",
-		    "Period" : 500000000,
+		    "Period" : 0.5,
 		    "Priority" : 50,
 		    "Function" : "timer_1_function"
 		}
@@ -30,6 +30,58 @@
 				   "tcp://127.0.0.1:5556"]
 		}
 	    ]
+	},
+
+	{
+	    "Name" : "component_2_instance",	  
+	    "Definition" : "test_components.component_2",
+
+	    "Timers" : [
+		{
+		    "Name" : "timer_2",
+		    "Period" : 1.0,
+		    "Priority" : 50,
+		    "Function" : "timer_function"
+		}
+	    ],	    	    
+
+	    "Publishers" : [
+		{
+		    "Name" : "publisher_port",
+		    "Endpoints" : ["tcp://*:5556"]
+		}
+	    ],
+
+	    "Servers" : [
+		{
+		    "Name" : "server",
+		    "Priority" : 60,
+		    "Function" : "server_function",
+		    "Endpoints" : ["tcp://*:5510"]
+		}
+	    ] 
+	},
+
+	{
+	    "Name" : "component_3_instance",	  
+	    "Definition" : "test_components.component_3",
+
+	    "Timers" : [
+		{
+		    "Name" : "timer_3",
+		    "Period" : 2.0,
+		    "Priority" : 50,
+		    "Function" : "timer_function"
+		}
+	    ],	 	    
+
+	    "Clients" : [
+		{
+		    "Name" : "client_port",
+		    "Endpoints" : ["tcp://127.0.0.1:5510"]
+		}
+	    ] 
+	    
 	}
     ]
 }

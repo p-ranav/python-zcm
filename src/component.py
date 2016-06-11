@@ -60,7 +60,7 @@ class Component():
     def add_client(self, new_client):
         self.clients.append(new_client)
 
-    def add_servers(self, new_server):
+    def add_server(self, new_server):
         self.servers.append(new_server)
 
     def configure_publishers(self, publisher_dictionary):

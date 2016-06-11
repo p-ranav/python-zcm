@@ -1,5 +1,6 @@
 import zmq
 from threading import Thread, Lock
+from operation_queue import SubscriberOperation, OperationQueue
 
 class Subscriber():
     def __init__(self, name, priority, subscriber_filter, endpoints, 

@@ -29,8 +29,9 @@ class ServerOperation():
 
     def execute(self):
         response = self.operation_function()
-        if not (self.server.server_socket == None):
-            self.server.server_socket.send(response)
+        if not (self.server == None):
+            if not (self.server.server_socket == None):
+                self.server.server_socket.send(response)
         self.server.ready = True
 
 class OperationQueue():

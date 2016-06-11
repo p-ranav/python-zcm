@@ -1,6 +1,11 @@
 import json
 from pprint import pprint
 import importlib
+from timer import Timer
+from publisher import Publisher
+from subscriber import Subscriber
+from client import Client
+from server import Server
 
 class Actor():
     def __init__(self):
@@ -20,8 +25,80 @@ class Actor():
                 subscribers_config_map = {}
                 clients_config_map = {}
                 servers_config_map = {}
-                
-                ## Finish configuration and you'll be done
+
+                if "Timers" in instance.keys():
+                    for timer in instance["Timers"]:
+                        timer_name = timer["Name"]
+                        timer_priority = timer["Priority"]
+                        timer_period = timer["Period"]
+                        timer_operation = timer["Function"]
+                        new_timer = Timer(timer_name,
+                                          timer_priority,
+                                          timer_period,
+                                          component_instance.timer_functions[timer_operation],
+                                          component_instance.operation_queue)
+                        component_instance.add_timer(new_timer)
+
+                if "Publishers" in instance.keys():
+                    for publisher in instance["Publishers"]:
+                        publisher_name = publisher["Name"]
+                        for endpoint in publisher["Endpoints"]:                        
+                            if publisher_name not in publishers_config_map.keys():
+                                publishers_config_map[publisher_name] = []
+                                publishers_config_map[publisher_name].append(endpoint)
+                                new_publisher = Publisher(publisher_name)
+                                component_instance.add_publisher(new_publisher)
+
+                if "Subscribers" in instance.keys():
+                    for subscriber in instance["Subscribers"]:
+                        subscriber_name = subscriber["Name"]
+                        subscriber_priority = subscriber["Priority"]
+                        subscriber_filter = subscriber["Filter"]
+                        subscriber_operation = subscriber["Function"]
+                        for endpoint in subscriber["Endpoints"]:
+                            if subscriber_name not in subscribers_config_map.keys():
+                                subscribers_config_map[subscriber_name] = []
+                                subscribers_config_map[subscriber_name].append(endpoint)
+                                new_subscriber = Subscriber(subscriber_name,
+                                                            subscriber_priority,
+                                                            subscriber_filter,
+                                                            subscribers_config_map[subscriber_name],
+                                                            component_instance.\
+                                                            subscriber_functions[subscriber_operation],
+                                                            component_instance.operation_queue)
+                                component_instance.add_subscriber(new_subscriber)
+
+                if "Clients" in instance.keys():
+                    for client in instance["Clients"]:
+                        client_name = client["Name"]
+                        for endpoint in client["Endpoints"]:
+                            if client_name not in clients_config_map.keys():
+                                clients_config_map[client_name] = []
+                                clients_config_map[client_name].append(endpoint)
+                                new_client = Client(client_name)
+                                component_instance.add_client(new_client)
+
+                if "Servers" in instance.keys():
+                    for server in instance["Servers"]:
+                        server_name = server["Name"]
+                        server_priority = server["Priority"]
+                        server_operation = server["Function"]
+                        for endpoint in server["Endpoints"]:
+                            if server_name not in servers_config_map.keys():
+                                servers_config_map[server_name] = []
+                                servers_config_map[server_name].append(endpoint)
+                                new_server = Server(server_name,
+                                                    server_priority,
+                                                    servers_config_map[server_name],
+                                                    component_instance.server_functions[server_operation],
+                                                    component_instance.operation_queue)
+                                component_instance.add_server(new_server)
+
+                component_instance.configure_publishers(publishers_config_map)
+                component_instance.configure_subscribers(subscribers_config_map)
+                component_instance.configure_clients(clients_config_map)
+                component_instance.configure_servers(servers_config_map)
+                self.component_instances.append(component_instance)
 
     def run(self):
         for instance in self.component_instances:
@@ -30,3 +107,4 @@ class Actor():
 
 my_actor = Actor()
 my_actor.configure("configuration.json")
+my_actor.run()
