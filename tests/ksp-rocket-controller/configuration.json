@@ -1,0 +1,26 @@
+{
+    "Component Instances": [
+	{
+	    "Name" : "sensor_instance",
+
+	    "Definition" : "ksp_rocket_controller.ksp_rocket_controller",
+
+	    "Timers" : [
+		{
+		    "Name" : "sensor_timer",
+		    "Priority" : 50,
+		    "Period" : 0.1,
+		    "Function" : "sensor_timer_operation"
+		},
+
+		{
+		    "Name" : "control_timer",
+		    "Priority" : 50,
+		    "Period" : 0.1,
+		    "Function" : "control_timer_operation"
+		}
+
+	    ]	    
+	}
+    ]
+}
