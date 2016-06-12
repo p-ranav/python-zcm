@@ -49,6 +49,11 @@ class ksp_rocket_controller(Component):
         self.yaw_state = self.control.yaw
         self.roll_state = self.control.roll
 
+        self.meco_altitude = 1000
+        self.parachute_altitude = 1300
+        self.landing_gear_altitude = 200
+        self.landing_altitude = 80
+
         self.current_state = "READY_FOR_LAUNCH"
         print "KSP ROCKET CONTROLLER:"
         print "---------------------"
@@ -89,7 +94,7 @@ class ksp_rocket_controller(Component):
             print "LOG ENTRY : Launch Successful"
 
         elif (self.current_state == "LAUNCH_SUCCESS"):
-            if (self.vessel.thrust == 0 or self.surface_altitude > 300):
+            if (self.vessel.thrust == 0 or self.surface_altitude > self.meco_altitude):
                 self.control.throttle = 0
                 self.current_state = "MAIN_ENGINE_CUTOFF"
                 print "LOG ENTRY : Main Engine Cutoff"
@@ -100,17 +105,18 @@ class ksp_rocket_controller(Component):
                 print "LOG ENTRY : Apogee Reached"
 
         elif (self.current_state == "APOGEE_REACHED" and
-              self.surface_altitude >=1000):
+              self.surface_altitude >= self.parachute_altitude):
             self.current_state = "PREPARE_FOR_LANDING"
             print "LOG ENTRY : Prepare for Landing"
 
-        elif (self.surface_altitude < 1000 and 
+        elif (self.surface_altitude < self.parachute_altitude and 
               self.current_state == "PREPARE_FOR_LANDING"):
             self.parachutes = self.vessel_parts.parachutes
-            self.parachutes[0].deploy()
-            if (self.surface_altitude < 200):
+            for parachute in self.parachutes:
+                parachute.deploy()
+            if (self.surface_altitude < self.landing_gear_altitude):
                 self.control.gear = True
-            if (self.surface_altitude < 80):
+            if (self.surface_altitude < self.landing_altitude):
                 self.current_state = "RECOVERY_SUCCESSFUL"
                 print "LOG ENTRY : Recovery Successful"
                 print "LOG ENTRY : Mission Complete"
