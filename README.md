@@ -21,6 +21,8 @@ Overview
 
 Python Packaging Index (PyPI) : https://pypi.python.org/pypi/zcm/1.0.0
 
+python-zcm is a Python port of https://github.com/pranav-srinivas-kumar/zcm
+
 Installation
 -------------
 
