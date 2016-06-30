@@ -2,6 +2,7 @@
 """actor.py: This file contains the Actor class."""
 import json
 import importlib
+import zmq
 from timer import Timer
 from publisher import Publisher
 from subscriber import Subscriber
@@ -22,6 +23,7 @@ class Actor():
     def __init__(self):
         """Construct an actor - Prepare an empty list of component instances"""
         self.component_instances = []
+        self.context = None
 
     def configure(self, configuration_file):
         """
@@ -32,6 +34,7 @@ class Actor():
         """
         with open(configuration_file) as data_file:
             root = json.load(data_file)
+            self.context = zmq.Context()
             for instance in root["Component Instances"]:
                 instance_source = instance["Definition"]
                 module_name, class_name = instance_source.split(".") 
@@ -63,7 +66,7 @@ class Actor():
                             if publisher_name not in publishers_config_map.keys():
                                 publishers_config_map[publisher_name] = []
                                 publishers_config_map[publisher_name].append(endpoint)
-                                new_publisher = Publisher(publisher_name)
+                                new_publisher = Publisher(publisher_name, self.context)
                                 component_instance.add_publisher(new_publisher)
 
                 if "Subscribers" in instance.keys():
@@ -78,6 +81,7 @@ class Actor():
                                 subscribers_config_map[subscriber_name].append(endpoint)
                                 new_subscriber = Subscriber(subscriber_name,
                                                             subscriber_priority,
+                                                            self.context,
                                                             subscriber_filter,
                                                             subscribers_config_map[subscriber_name],
                                                             component_instance.\
@@ -92,7 +96,7 @@ class Actor():
                             if client_name not in clients_config_map.keys():
                                 clients_config_map[client_name] = []
                                 clients_config_map[client_name].append(endpoint)
-                                new_client = Client(client_name)
+                                new_client = Client(client_name, self.context)
                                 component_instance.add_client(new_client)
 
                 if "Servers" in instance.keys():
@@ -106,6 +110,7 @@ class Actor():
                                 servers_config_map[server_name].append(endpoint)
                                 new_server = Server(server_name,
                                                     server_priority,
+                                                    self.context,
                                                     servers_config_map[server_name],
                                                     component_instance.server_functions[server_operation],
                                                     component_instance.operation_queue)

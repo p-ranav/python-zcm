@@ -15,7 +15,7 @@ __status__ = "Production"
 
 # Subscriber class
 class Subscriber():
-    def __init__(self, name, priority, subscriber_filter, endpoints, 
+    def __init__(self, name, priority, actor_context, subscriber_filter, endpoints, 
                  operation_function, operation_queue):
         """
         Create a subscriber
@@ -23,6 +23,7 @@ class Subscriber():
         Keyword arguments:
         name - Name of the timer
         priority - Priority of the subscriber
+        actor_context - ZMQ context of the actor process
         subscriber_filter - ZMQ filter for the subscriber
         endpoints - A list of endpoint strings
         operation_function - Operation function of the subscriber
@@ -35,7 +36,7 @@ class Subscriber():
         self.operation_function = operation_function
         self.operation_queue = operation_queue
 
-        self.context = zmq.Context()
+        self.context = actor_context
         self.subscriber_socket = self.context.socket(zmq.SUB)
         for endpoint in endpoints:
             self.subscriber_socket.connect(endpoint)
@@ -50,7 +51,6 @@ class Subscriber():
         new_endpoints - A new set of endpoints to connect to
         """
         self.endpoints = new_endpoints
-        self.context = zmq.Context()
         self.subscriber_socket = self.context.socket(zmq.SUB)
         for endpoint in new_endpoints:
             self.subscriber_socket.connect(endpoint)

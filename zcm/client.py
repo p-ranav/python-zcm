@@ -13,17 +13,18 @@ __status__ = "Production"
 
 # Client class
 class Client():
-    def __init__(self, name, endpoints = None):
+    def __init__(self, name, actor_context = None, endpoints = None):
         """
         Create a client
 
         Keyword arguments:
         name - Name of the timer
+        actor_context - ZMQ context of the actor process
         endpoints - A list of endpoint strings
         """
         self.name = name
         self.endpoints = None
-        self.context = None
+        self.context = actor_context
         self.client_socket = None
         if not (endpoints == None):
             self.endpoints = endpoints
@@ -40,7 +41,6 @@ class Client():
         new_endpoints - New set of endpoints as a list
         """
         self.endpoints = new_endpoints
-        self.context = zmq.Context()
         self.client_socket = self.context.socket(zmq.REQ)
         for endpoint in self.endpoints:
             self.client_socket.connect(endpoint)

@@ -14,6 +14,10 @@ tests/publish-subscribe/__init__.py
 tests/publish-subscribe/configuration.json
 tests/publish-subscribe/publisher.py
 tests/publish-subscribe/subscriber.py
+tests/simple-timer/README.md
+tests/simple-timer/__init__.py
+tests/simple-timer/configuration.json
+tests/simple-timer/simple_timer.py
 tests/three-components/__init__.py
 tests/three-components/component_1.py
 tests/three-components/component_2.py

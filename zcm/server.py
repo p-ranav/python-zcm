@@ -15,7 +15,7 @@ __status__ = "Production"
 
 # Server class
 class Server():
-    def __init__(self, name, priority, endpoints, 
+    def __init__(self, name, priority, actor_context, endpoints, 
                  operation_function, operation_queue):
         """
         Create a server
@@ -23,6 +23,7 @@ class Server():
         Keyword arguments:
         name - Name of the timer
         priority - Priority of the subscriber
+        actor_context - ZMQ context of the actor process
         endpoints - A list of endpoint strings
         operation_function - Operation function of the subscriber
         operation_queue - The operation queue object
@@ -32,7 +33,7 @@ class Server():
         self.endpoints = endpoints
         self.operation_function = operation_function
         self.operation_queue = operation_queue
-        self.context = zmq.Context()
+        self.context = actor_context
         self.server_socket = self.context.socket(zmq.REP)
         for endpoint in self.endpoints:
             self.server_socket.bind(endpoint)
@@ -47,7 +48,6 @@ class Server():
         new_endpoints - A new set of endpoints to connect to
         """
         self.endpoints = new_endpoints
-        self.context = zmq.Context()
         self.server_socket = self.context.socket(zmq.REP)
         for endpoint in self.endpoints:
             self.server_socket.bind(endpoint)
