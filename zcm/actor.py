@@ -28,7 +28,7 @@ class Actor():
     def configure(self, configuration_file):
         """
         Configure the component instances list
-        
+
         Keyword arguments:
         configuration_file - JSON configuration file to parse
         """
@@ -37,10 +37,10 @@ class Actor():
             self.context = zmq.Context()
             for instance in root["Component Instances"]:
                 instance_source = instance["Definition"]
-                module_name, class_name = instance_source.split(".") 
-                module = importlib.import_module(module_name) 
-                component_instance = getattr(module, class_name)() 
-
+                module_name, class_name = instance_source.split(".")
+                module = importlib.import_module(module_name)
+                component_instance = getattr(module, class_name)()
+                component_instance.name = instance["Name"]
                 publishers_config_map = {}
                 subscribers_config_map = {}
                 clients_config_map = {}
@@ -62,7 +62,7 @@ class Actor():
                 if "Publishers" in instance.keys():
                     for publisher in instance["Publishers"]:
                         publisher_name = publisher["Name"]
-                        for endpoint in publisher["Endpoints"]:                        
+                        for endpoint in publisher["Endpoints"]:
                             if publisher_name not in publishers_config_map.keys():
                                 publishers_config_map[publisher_name] = []
                                 publishers_config_map[publisher_name].append(endpoint)
